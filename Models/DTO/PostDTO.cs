@@ -1,6 +1,6 @@
 ﻿namespace Blog.Models.DTO
 {
-    public class EditPostDTO
+    public class PostDTO
     {
         public string Title { get; set; }
         public string Content { get; set; }

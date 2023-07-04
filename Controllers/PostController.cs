@@ -26,7 +26,7 @@ namespace Blog.Controllers
             return  Ok(posts);
         }
         [HttpGet]
-        [Route("{id:guid}")]
+        [Route("{id=guid}")]
         public async Task<IActionResult> GetPostById(Guid id)
         {
             var post = await _context.Posts.Include(x => x.Comments).Where(x => x.Id == id)
@@ -44,15 +44,15 @@ namespace Blog.Controllers
         }
         [HttpPost]
     
-        public async Task<IActionResult>AddPost(AddPostDTO addPostRequest)
+        public async Task<IActionResult>AddPost(PostDTO postDTO)
         {
             var post = new Post()
             {
-                Title = addPostRequest.Title,
-                Content = addPostRequest.Content,
-                Author = addPostRequest.Author,
-                PublishedDate = addPostRequest.PublishedDate,
-                UpdatedDate = addPostRequest.UpdatedDate
+                Title = postDTO.Title,
+                Content = postDTO.Content,
+                Author = postDTO.Author,
+                PublishedDate = postDTO.PublishedDate,
+                UpdatedDate =postDTO.UpdatedDate
 
             };
             post.Id = Guid.NewGuid();
@@ -62,17 +62,17 @@ namespace Blog.Controllers
         }
         [HttpPut]
         [Route("{id=guid}")]
-        public async Task<IActionResult> EditPost([FromRoute] Guid id,[FromBody]EditPostDTO editPostDTO)
+        public async Task<IActionResult> EditPost([FromRoute] Guid id,[FromBody]PostDTO postDTO)
         {
             
             var post =await _context.Posts.FindAsync(id);
             if(post!=null)
             {
-                post.Author = editPostDTO.Author;
-                post.PublishedDate = editPostDTO.PublishedDate;
-                post.UpdatedDate = editPostDTO.UpdatedDate;
-                post.Content = editPostDTO.Content;
-                post.Title = editPostDTO.Title;
+                post.Author = postDTO.Author;
+                post.PublishedDate = postDTO.PublishedDate;
+                post.UpdatedDate = postDTO.UpdatedDate;
+                post.Content = postDTO.Content;
+                post.Title = postDTO.Title;
                await _context.SaveChangesAsync();
                 return Ok(post);
                     

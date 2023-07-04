@@ -8,6 +8,6 @@
         public Guid PostId { get; set; }
         public DateTime PublishedDate { get; set; }
         
-        public virtual Post Post { get; set; }
+       // public virtual Post Post { get; set; }
     }
 }

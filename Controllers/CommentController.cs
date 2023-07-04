@@ -58,5 +58,34 @@ namespace Blog.Controllers
                 return NotFound();
             }
         }
+        [HttpPut]
+        [Route("{id=guid}")]
+        public async Task<IActionResult> EditComment([FromBody]CommentDTO commentDTO,[FromRoute]Guid id)
+        {
+            var comment =await _context.Commments.FindAsync(id);
+            if(comment==null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                var isValidPost = await _context.Posts.FindAsync(commentDTO.PostId);
+                if (isValidPost != null)
+                {
+
+
+                    comment.Author = commentDTO.Author;
+                    comment.PostId = commentDTO.PostId;
+                    comment.PublishedDate = commentDTO.PublishedDate;
+                    comment.Content = commentDTO.Content;
+                    await _context.SaveChangesAsync();
+                    return Ok(comment);
+                }
+                else
+                {
+                    return BadRequest(error: "Invalid Post ");
+                }
+            }
+        }
     }
 }
